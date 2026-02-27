@@ -52,12 +52,15 @@ resource "aws_instance" "ec2" {
     for_each = var.server_config
     ami = each.value.ami
     instance_type = each.value.instance_type
+
+    # meta Argument
+    depends_on = [ aws_security_group.allow_tls, aws_key_pair.mykey]
     key_name = aws_key_pair.mykey.key_name
     vpc_security_group_ids = [aws_security_group.allow_tls.id]
     user_data = file("nginx.sh")
 
     root_block_device {
-        volume_size = each.value.storage_size
+        volume_size = var.env == "dev" ? each.value.storage_size : each.value.storage_size * 2
         volume_type = "gp3"
         delete_on_termination = true
     }
@@ -65,4 +68,10 @@ resource "aws_instance" "ec2" {
     tags = {
         Name = each.key
     }
+}
+
+resource "aws_ec2_instance_state" "stop_my_instance" {
+  for_each = aws_instance.ec2
+  instance_id = each.value.id # Replace with your actual instance ID
+  state       = var.server_config[each.key].instance_state
 }

@@ -1,6 +1,11 @@
 resource "aws_key_pair" "mykey" {
     key_name = "terra-key"
     public_key = file("~/.ssh/terra-key.pub")
+
+    tags = {
+        Name = "terra-key"
+        Enviroment = var.env
+    }
 }
 
 resource "aws_default_vpc" "myvpc" {
@@ -45,6 +50,11 @@ resource "aws_security_group" "allow_tls" {
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "allow_tls"
+    Enviroment = var.env
+  }
 }
 
 resource "aws_instance" "ec2" {
@@ -60,7 +70,7 @@ resource "aws_instance" "ec2" {
     user_data = file("nginx.sh")
 
     root_block_device {
-        volume_size = var.env == "prd" ? each.value.storage_size : each.value.storage_size * 2
+        volume_size = var.env == "dev" ? each.value.storage_size : each.value.storage_size * 2
         volume_type = "gp3"
         delete_on_termination = true
     }

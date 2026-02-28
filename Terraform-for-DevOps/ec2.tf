@@ -60,7 +60,7 @@ resource "aws_instance" "ec2" {
     user_data = file("nginx.sh")
 
     root_block_device {
-        volume_size = var.env == "dev" ? each.value.storage_size : each.value.storage_size * 2
+        volume_size = var.env == "prd" ? each.value.storage_size : each.value.storage_size * 2
         volume_type = "gp3"
         delete_on_termination = true
     }

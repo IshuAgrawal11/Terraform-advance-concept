@@ -21,7 +21,13 @@ variable "server_config" {
     "db-server" = {
       ami           = "ami-073130f74f5ffb161" # Ubuntu
       instance_type = "t3.small"
-      storage_size  = 20
+      storage_size  = 10
+      instance_state = "running"
+    }
+    "test-server" = {
+      ami           = "ami-073130f74f5ffb161" # Ubuntu
+      instance_type = "t3.micro"
+      storage_size  = 10
       instance_state = "running"
     }
   }

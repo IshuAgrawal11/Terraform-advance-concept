@@ -1,5 +1,5 @@
 resource "aws_key_pair" "mykey" {
-    key_name = "terra-key"
+    key_name = "${var.env}-terra-key"
     public_key = file("~/.ssh/terra-key.pub")
 
     tags = {
@@ -15,7 +15,7 @@ resource "aws_default_vpc" "myvpc" {
 }
 
 resource "aws_security_group" "allow_tls" {
-  name        = "allow_tls"
+  name        = "${var.env}-allow_tls"
   description = "Allow TLS inbound traffic"
   vpc_id      = aws_default_vpc.myvpc.id #Interpolation is a way to use variables in terraform files
 
@@ -77,6 +77,7 @@ resource "aws_instance" "ec2" {
 
     tags = {
         Name = each.key
+        Enviroment = var.env
     }
 }
 

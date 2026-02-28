@@ -1,0 +1,9 @@
+resource "aws_s3_bucket" "my_bucket" {
+    bucket = "ishuagrawal-bucket-state"
+    
+    tags = {
+        Name = "My bucket"
+    }
+
+}
+

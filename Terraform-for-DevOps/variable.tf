@@ -28,6 +28,6 @@ variable "server_config" {
 }
 
 variable "env" {
-  default = "dev"
+  default = "prd"
   type = string
 }

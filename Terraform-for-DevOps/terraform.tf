@@ -10,6 +10,6 @@ terraform {
     bucket = "ishuagrawal-bucket-state"
     key = "terraform.tfstate"
     region = "eu-north-1"
-    use_lockfile = true
+    use_lockfile = false
   }
 }
